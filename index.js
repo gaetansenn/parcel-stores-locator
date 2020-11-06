@@ -1,3 +1,4 @@
+const { join } = require('path')
 const logger = require('consola').withTag('@dewib/parcel-stores-locator')
 
 const middleware = require('./middleware')
@@ -17,5 +18,20 @@ module.exports = function (moduleOptions) {
   this.addServerMiddleware({
     path: 'parcel-stores-locator',
     handler: middleware({ providers })
+  })
+
+  // Inject providers for SSR Plugin to avoid middleware
+  this.nuxt.hook('vue-renderer:context', (ssrContext) => {
+    ssrContext.parcelStoresLocatorsProviders = providers
+  })
+
+
+  // Inject plugin
+  this.addPlugin({
+    src: join(__dirname, './plugin.js'),
+    fileName: 'parcelStoresLocatorPlugin.js',
+    options: {
+      providers: JSON.stringify(Object.keys(providers))
+    }
   })
 }

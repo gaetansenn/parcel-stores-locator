@@ -55,10 +55,8 @@ module.exports = ({ providers }) => async (req, res) => {
     nodeRes.send(req, res, 'please provide address')
   }
 
-  // Inject limit as query
-  const [error, response] = await providers[provider].getAdresses(body)
-
-  console.log(error, response)
+  // TODO: Inject limit as query
+  const [error, response] = await providers[provider].getStores(body)
 
   if (error) {
     nodeRes.status(res, 502)

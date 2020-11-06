@@ -41,10 +41,10 @@ module.exports = class UpsService {
   }
 
   /**
-   * Get addresses
+   * Get stores
    * @param {Object} params
    */
-  async getAdresses ({ type, limit, ...content }) {
+  async getStores ({ type, limit, ...content }) {
     let request = {
       AccessRequest: {
         AccessLicenseNumber: this.config.licence,

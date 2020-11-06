@@ -22,5 +22,10 @@
   "bugs": {
     "url": "https://github.com/gaetansenn/parcel-stores-locator/issues"
   },
-  "homepage": "https://github.com/gaetansenn/parcel-stores-locator#readme"
+  "homepage": "https://github.com/gaetansenn/parcel-stores-locator#readme",
+  "dependencies": {
+    "consola": "^2.15.0",
+    "node-req": "^2.1.2",
+    "node-res": "^5.0.1"
+  }
 }

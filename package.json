@@ -1,0 +1,26 @@
+{
+  "name": "@dewib/parcel-stores-locator",
+  "version": "1.0.0",
+  "description": "Expose and draw on the map the locations of parcel retrieval from most shippers such as UPS, DHL, La Poste ...",
+  "main": "lib/module.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/gaetansenn/parcel-stores-locator.git"
+  },
+  "keywords": [
+    "gmap",
+    "ups",
+    "access",
+    "point",
+    "parcels"
+  ],
+  "author": "Gaetan SENN (Dewib)",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/gaetansenn/parcel-stores-locator/issues"
+  },
+  "homepage": "https://github.com/gaetansenn/parcel-stores-locator#readme"
+}

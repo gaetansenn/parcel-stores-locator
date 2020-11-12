@@ -7,7 +7,7 @@ function mapResponse (response) {
     id: location.LocationID,
     lat: location.Geocode.Latitude,
     lng: location.Geocode.Longitude,
-    distance: location.Distance.Value,
+    distance: parseFloat(location.Distance.Value),
     name: location.AddressKeyFormat.ConsigneeName,
     address: {
       street: location.AddressKeyFormat.AddressLine,

@@ -23,6 +23,27 @@ export default (ctx, inject) => {
           else return [`Unable to get stores : ${response}`]
         }
       }
+    },
+    getGeolocation (options = {}) {
+      return new Promise((resolve) => {
+        if (!('geolocation' in window.navigator)) resolve(['browser-support'])
+        else
+          window.navigator.geolocation.getCurrentPosition(
+            (position) => {
+              resolve([false, {
+                lat: position.coords.latitude,
+                long: position.coords.longitude,
+                altitude: position.coords.altitude,
+                altitudeAccuracy: position.coords.altitudeAccuracy,
+                accuracy: position.coords.accuracy
+              }])
+            },
+            () => {
+              resolve(['position-access'])
+            },
+            options
+          )
+      })
     }
   }
 

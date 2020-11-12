@@ -78,8 +78,8 @@ module.exports = class UpsService {
 
     if (type === 'geocode')
       request.LocatorRequest.OriginAddress.Geocode = {
-        Latitude: content.lat,
-        Longitude: content.long
+        Latitude: `${content.lat}`,
+        Longitude: `${content.long}`
       }
     else
       request.LocatorRequest.OriginAddress.AddressKeyFormat.SingleLineAddress = content.address

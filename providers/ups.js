@@ -115,7 +115,7 @@ module.exports = class UpsService {
 
       // Catch errors
       if (response.LocatorResponse.Response.Error || response.LocatorResponse.Response.ResponseStatusCode !== '1')
-        return [`'Error from UPS: ${response.LocatorResponse.Response}`]
+        return [`Error from UPS: ${JSON.stringify(response.LocatorResponse.Response)}`]
       else return mapResponse(response)
     } catch (err) {
       return [err]

@@ -1,17 +1,15 @@
-const logger = require('consola').withTag('@dewib/parcel-stores-locator')
-
 export default (ctx, inject) => {
   const helper = {
     async getLocators ({ provider, ...content }) {
       if (process.server) {
         const providers = ctx.ssrContext.parcelStoresLocatorsProviders
 
-        if (!providers[provider]) logger.error(`Unable to find provider ${provider}`)
-        else providers[provider].getStores(content)
+        if (!providers[provider]) return [`Unable to find provider ${provider}`]
+        else return providers[provider].getStores(content)
       } else {
         const providers = JSON.parse('<%= options.providers %>')
 
-        if (!providers.includes(provider)) logger.error(`Unable to find provider ${provider}`)
+        if (!providers.includes(provider)) return [`Unable to find provider ${provider}`]
         else {
           const response = await fetch(`/parcel-stores-locator/${provider}`, {
             method: 'POST',
@@ -21,12 +19,12 @@ export default (ctx, inject) => {
             }
           })
 
-          if (response.ok) return response.json()
-          else logger.error(`Unable to get stores : ${response}`)
+          if (response.ok) return [false, await response.json()]
+          else return [`Unable to get stores : ${response}`]
         }
       }
     }
   }
-  
+
   inject('parcelStoresLocator', helper)
 }

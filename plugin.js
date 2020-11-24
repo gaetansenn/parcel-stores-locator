@@ -1,5 +1,8 @@
 export default (ctx, inject) => {
   const helper = {
+    config: {
+      gmap: JSON.parse('<%= options.gmap %>')
+    },
     async getLocators ({ provider, ...content }) {
       if (process.server) {
         const providers = ctx.ssrContext.parcelStoresLocatorsProviders

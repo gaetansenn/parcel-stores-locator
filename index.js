@@ -20,18 +20,26 @@ module.exports = function (moduleOptions) {
     handler: middleware({ providers })
   })
 
+  // Inject components
+  this.nuxt.hook('components:dirs', (dirs) => {
+    dirs.push({
+      path: join(__dirname, 'components'),
+      prefix: 'parcel-stores-locator'
+    })
+  })
+
   // Inject providers for SSR Plugin to avoid middleware
   this.nuxt.hook('vue-renderer:context', (ssrContext) => {
     ssrContext.parcelStoresLocatorsProviders = providers
   })
-
 
   // Inject plugin
   this.addPlugin({
     src: join(__dirname, './plugin.js'),
     fileName: 'parcelStoresLocatorPlugin.js',
     options: {
-      providers: JSON.stringify(Object.keys(providers))
+      providers: JSON.stringify(Object.keys(providers)),
+      gmap: JSON.stringify(parcelStoresLocator.gmap)
     }
   })
 }

@@ -31,4 +31,48 @@ export default {
 
 `parcelStoresLocator` will automatically load provider according to configuration.
 
+### Components
+
+Parcel Stores locator inject vue components with `components:dirs` nuxt hook to display the stores inside a map.
+
+#### Gmap
+
+Please add `nuxt-gmaps` and set your configuration:
+
+```js
+export default {
+  parcelStoresLocator {
+    gmap: {
+      location: {
+        icon: 'data:image/png;base64,...' // Change default gps location icon
+      },
+       compass: {
+        icon: 'data:image/png;base64,...' // Change default compass icon
+      },
+      pins: {
+        selected: {
+          icon: 'data:image/png;base64,...' // Please provide selected pin
+        },
+        unselected: {
+          icon: 'data:image/png;base64,...' // Please provide unselected pin
+        }
+      },
+      // TODO: Add more config
+    }
+  }
+}
+```
+
+Then inside your page
+```html
+<parcel-stores-locator-gmap
+  v-model="selected" // selected store
+  :position="position"  // position of user (ex: GPS position)
+  :locations="stores" // All locations returned by $parcelStoresLocator.getGeolocation()
+  @select="select" // Select event from map
+/>
+```
+
+
+
 

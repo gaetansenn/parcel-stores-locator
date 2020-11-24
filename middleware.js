@@ -45,9 +45,9 @@ module.exports = ({ providers }) => async (req, res) => {
     nodeRes.send(req, res, 'please provide search type \'geocode\' or \'address\'')
   }
 
-  if (body.type === 'geocode' && (!body.lat || !body.long)) {
+  if (body.type === 'geocode' && (!body.lat || !body.lng)) {
     nodeRes.status(res, 400)
-    nodeRes.send(req, res, 'please provide lat and long')
+    nodeRes.send(req, res, 'please provide lat and lng')
   }
 
   if (body.type === 'address' && !body.address) {

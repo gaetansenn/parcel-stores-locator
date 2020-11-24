@@ -32,7 +32,7 @@ export default (ctx, inject) => {
             (position) => {
               resolve([false, {
                 lat: position.coords.latitude,
-                long: position.coords.longitude,
+                lng: position.coords.longitude,
                 altitude: position.coords.altitude,
                 altitudeAccuracy: position.coords.altitudeAccuracy,
                 accuracy: position.coords.accuracy

@@ -5,8 +5,8 @@ function mapResponse (response) {
 
   return [false, response.LocatorResponse.SearchResults.DropLocation.map(location => ({
     id: location.LocationID,
-    lat: location.Geocode.Latitude,
-    lng: location.Geocode.Longitude,
+    lat: parseFloat(location.Geocode.Latitude),
+    lng: parseFloat(location.Geocode.Longitude),
     distance: parseFloat(location.Distance.Value),
     name: location.AddressKeyFormat.ConsigneeName,
     address: {
@@ -79,7 +79,7 @@ module.exports = class UpsService {
     if (type === 'geocode')
       request.LocatorRequest.OriginAddress.Geocode = {
         Latitude: `${content.lat}`,
-        Longitude: `${content.long}`
+        Longitude: `${content.lng}`
       }
     else
       request.LocatorRequest.OriginAddress.AddressKeyFormat.SingleLineAddress = content.address

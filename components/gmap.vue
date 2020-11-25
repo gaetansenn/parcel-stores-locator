@@ -21,6 +21,7 @@
     <div v-if="$parcelStoresLocator.config.gmap.compass" class="stores-map-location" @click="updateLocation">
       <img :src="$parcelStoresLocator.config.gmap.compass.icon">
     </div>
+    <slot />
   </div>
 </template>
 

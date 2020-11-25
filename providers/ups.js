@@ -12,7 +12,7 @@ function mapResponse (response) {
     address: {
       street: location.AddressKeyFormat.AddressLine,
       city: location.AddressKeyFormat.PoliticalDivision2,
-      postalcode: location.AddressKeyFormat.PostcodePrimaryLow
+      postcode: location.AddressKeyFormat.PostcodePrimaryLow
     },
     hours: {
       short: location.StandardHoursOfOperation,

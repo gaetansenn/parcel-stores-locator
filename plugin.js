@@ -27,7 +27,7 @@ export default (ctx, inject) => {
         }
       }
     },
-    getGeolocation (options = {}) {
+    getGeolocation (options = { timeout: 5000 }) {
       return new Promise((resolve) => {
         if (!('geolocation' in window.navigator)) resolve(['browser-support'])
         else

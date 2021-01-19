@@ -71,6 +71,7 @@ export default {
       else this.readySubscriptions.push(method)
     },
     init (googleApi) {
+      console.log('init methdo')
       // To prevent double initialization of map
       if (this.ready) return
 
@@ -91,7 +92,7 @@ export default {
           }
         })
         this.$refs.gMap.map.panTo(this.position)
-      }
+      } else this.zoomMarkers(this.newLocations)
 
       this.ready = true
       this.readySubscriptions.forEach(method => method())
@@ -110,6 +111,7 @@ export default {
       })
     },
     onLocationsChange (locations) {
+      console.log('on location change')
       this.newLocations = locations
       this.$nextTick(() => {
         this.onReady(() => {

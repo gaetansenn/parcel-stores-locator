@@ -73,6 +73,30 @@ Then inside your page
 />
 ```
 
+##### Methods
+You can access to component methods by using the ref argument.
+For instance we would like to zoom map to locations after `display: none` removed
+
+
+```html
+<parcel-stores-locator-gmap
+  ref="map"
+/>
+```
+
+Then in your component
+
+```js
+methods: {
+  openMap () {
+    openMap () {
+      this.opened = true
+      this.$nextTick(this.$refs.map.zoomOnLocations)
+    }
+  }
+}
+```
+
 
 
 

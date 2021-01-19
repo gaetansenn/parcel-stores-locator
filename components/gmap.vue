@@ -71,7 +71,6 @@ export default {
       else this.readySubscriptions.push(method)
     },
     init (googleApi) {
-      console.log('init methdo')
       // To prevent double initialization of map
       if (this.ready) return
 
@@ -111,7 +110,6 @@ export default {
       })
     },
     onLocationsChange (locations) {
-      console.log('on location change')
       this.newLocations = locations
       this.$nextTick(() => {
         this.onReady(() => {
@@ -119,6 +117,9 @@ export default {
           this.zoomMarkers(this.newLocations)
         })
       })
+    },
+    zoomOnLocations () {
+      this.zoomMarkers(this.newLocations)
     },
     zoomMarkers (locations) {
       const bounds = new this.googleApi.maps.LatLngBounds()

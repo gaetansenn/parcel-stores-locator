@@ -1,27 +1,71 @@
 const https = require('https')
 
-function mapResponse (response) {
+function weekDays (locale) {
+  const date = new Date(2020, 10, 29)
+
+  return Array.from(Array(7).keys()).map(() => {
+    const day = date.toLocaleString(locale, { weekday: 'long' }).substring(0, 3).toLowerCase()
+
+    date.setDate(date.getDate() + 1)
+
+    return day.substring(0, 1).toUpperCase() + day.substring(1)
+  })
+}
+
+function mapResponse (response, locale) {
   if (!response.LocatorResponse.SearchResults) return ['Unable to parse UPS response']
 
-  return [false, response.LocatorResponse.SearchResults.DropLocation.map(location => ({
-    id: location.LocationID,
-    lat: parseFloat(location.Geocode.Latitude),
-    lng: parseFloat(location.Geocode.Longitude),
-    distance: parseFloat(location.Distance.Value),
-    name: location.AddressKeyFormat.ConsigneeName,
-    address: {
-      street: location.AddressKeyFormat.AddressLine,
-      city: location.AddressKeyFormat.PoliticalDivision2,
-      postcode: location.AddressKeyFormat.PostcodePrimaryLow
-    },
-    hours: {
-      short: location.StandardHoursOfOperation,
-      days: location.OperatingHours.StandardHours.DayOfWeek.map(h => ({
-        openAt: h.OpenHours,
-        closeAt: h.CloseHours
-      }))
+  const _weekDays = weekDays(locale)
+
+  return [false, response.LocatorResponse.SearchResults.DropLocation.map((location) => {
+    const _location = {
+      id: location.LocationID,
+      lat: parseFloat(location.Geocode.Latitude),
+      lng: parseFloat(location.Geocode.Longitude),
+      distance: parseFloat(location.Distance.Value),
+      name: location.AddressKeyFormat.ConsigneeName,
+      address: {
+        street: location.AddressKeyFormat.AddressLine,
+        city: location.AddressKeyFormat.PoliticalDivision2,
+        postcode: location.AddressKeyFormat.PostcodePrimaryLow
+      },
+      hours: {
+        short: location.StandardHoursOfOperation,
+        days: location.OperatingHours.StandardHours.DayOfWeek
+      }
     }
-  }))]
+
+    if (location.OperatingHours.StandardHours.HoursType === '10')
+      _location.hours.days = location.OperatingHours.StandardHours.DayOfWeek.map(h => ({
+        openAt: Array.isArray(h.OpenHours) ? h.OpenHours : [h.OpenHours],
+        closeAt: Array.isArray(h.CloseHours) ? h.CloseHours : [h.CloseHours]
+      })).reduce((accu, value, index) => {
+        if (!value.openAt[0]) {
+          accu.push(false)
+
+          return accu
+        }
+
+        const hours = value.openAt.reduce((accHour, hour, indexHours) => {
+          function parseHour (time) {
+            const hour = (time.substring(1, 2) === 0) ? time.substring(0, 1) : time.substring(0, 2)
+            const minutes = time.substring(2, 4)
+
+            return `${hour}h${minutes}`
+          }
+
+          accHour.push(`${parseHour(hour)} - ${parseHour(value.closeAt[indexHours])}`)
+
+          return accHour
+        }, [])
+
+        accu.push(`${_weekDays[index]}: ${hours.join(', ')}`)
+
+        return accu
+      }, [])
+
+    return _location
+  })]
 }
 
 /**
@@ -44,7 +88,7 @@ module.exports = class UpsService {
    * Get stores
    * @param {Object} params
    */
-  async getStores ({ type, limit, ...content }) {
+  async getStores ({ type, limit, locale, ...content }) {
     let request = {
       AccessRequest: {
         AccessLicenseNumber: this.config.licence,
@@ -65,7 +109,7 @@ module.exports = class UpsService {
           }
         },
         Translate: {
-          Locale: this.config.locale
+          Locale: locale || this.config.locale
         },
         LocationSearchCriteria: {
           MaximumListSize: limit || this.config.limit,

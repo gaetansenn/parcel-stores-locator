@@ -48,8 +48,8 @@ function mapResponse (response, locale) {
 
         const hours = value.openAt.reduce((accHour, hour, indexHours) => {
           function parseHour (time) {
-            const hour = (time.substring(1, 2) === 0) ? time.substring(0, 1) : time.substring(0, 2)
-            const minutes = time.substring(2, 4)
+            const hour = (time.length === 3) ? time[0] : time.substring(0, 2)
+            const minutes = (time.length === 3) ? time.substring(1, 3) : time.substring(2, 4)
 
             return `${hour}h${minutes}`
           }
@@ -160,7 +160,7 @@ module.exports = class UpsService {
       // Catch errors
       if (response.LocatorResponse.Response.Error || response.LocatorResponse.Response.ResponseStatusCode !== '1')
         return [`Error from UPS: ${JSON.stringify(response.LocatorResponse.Response)}`]
-      else return mapResponse(response)
+      else return mapResponse(response, locale || this.config.locale)
     } catch (err) {
       return [err]
     }

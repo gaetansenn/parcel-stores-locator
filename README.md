@@ -5,6 +5,9 @@
 
 > Module to Expose and draw on the map the locations of parcel retrieval from most shippers such as UPS, DHL, La Poste ...
 
+## Requirements
+Please use the version of node 13 if you want to support native i18n or include intl during node compilation
+
 ## Features
 
 - Api plugin (SSR, Client side) to return locations according to provider (Ups and more soon)

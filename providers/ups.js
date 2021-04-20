@@ -126,7 +126,7 @@ module.exports = class UpsService {
         Longitude: `${content.lng}`
       }
     else
-      request.LocatorRequest.OriginAddress.AddressKeyFormat.SingleLineAddress = content.address
+      request.LocatorRequest.OriginAddress.AddressKeyFormat.SingleLineAddress = content.address.normalize('NFD').replace(/[\u0300-\u036F]/g, '')
 
     request = JSON.stringify(request)
 

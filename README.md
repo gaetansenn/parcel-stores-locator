@@ -3,7 +3,7 @@
 - [Features](#features)
 - [Usage](#usage)
 
-> Module to Expose and draw on the map the locations of parcel retrieval from most shippers such as UPS, DHL, La Poste ...
+> Module to Expose and draw on the map the locations of parcel retrieval from most shippers such as UPS, DHL, La Poste, Mondial Relay ...
 
 ## Requirements
 Please use the version of node 13 if you want to support native i18n or include intl during node compilation
@@ -24,6 +24,9 @@ export default {
     providers: {
       ups: {
         // Ups configuration
+      },
+      mondialrelay: {
+        // Mondial Relay configuration
       }
     }
   }

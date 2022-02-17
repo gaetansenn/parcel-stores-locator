@@ -10,7 +10,8 @@ const mapResponse = (response) => {
       address: {
         city: location.ville.trim(),
         postcode: location.cp,
-        street: `${location.lgadr3.trim()}${location.lgadr4.trim()}`
+        street: location.lgadr3.trim(),
+        complement: location.lgadr4.trim()
       },
       distance: location.distance,
       hours: {

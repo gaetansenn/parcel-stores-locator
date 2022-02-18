@@ -4,6 +4,7 @@ const xml2js = require('xml2js')
 
 const mapResponse = (response) => {
   if (parseInt(response.stat) !== 0) return [`Mondial Relay error code ${response.stat}`]
+  if (!response.pointsrelais.pointrelais_details) return [false, []]
 
   return [false, response.pointsrelais.pointrelais_details.map((location) => {
     return {

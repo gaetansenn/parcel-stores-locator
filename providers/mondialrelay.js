@@ -96,8 +96,14 @@ module.exports = class MondialRelayService {
     let hashLocation = ''
 
     if (type === 'geocode') {
-      const latitude = content.lat < 10 ? `0${content.lat.toPrecision(8)}` : content.lat.toPrecision(9)
-      const longitude = content.lng < 10 ? `0${content.lng.toPrecision(8)}` : content.lng.toPrecision(9)
+      let latitude = Math.abs(content.lat)
+      latitude = latitude < 10 ? `0${latitude.toPrecision(8)}` : latitude.toPrecision(9)
+
+      let longitude = Math.abs(content.lng)
+      longitude = longitude < 10 ? `0${longitude.toPrecision(8)}` : longitude.toPrecision(9)
+
+      if (content.lat < 0) latitude = `-${latitude}`
+      if (content.lng < 0) longitude = `-${longitude}`
 
       xmlLocation = `<Latitude>${latitude}</Latitude><Longitude>${longitude}</Longitude>`
       hashLocation = `${latitude}${longitude}`

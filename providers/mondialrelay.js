@@ -2,9 +2,23 @@ const https = require('https')
 const crypto = require('crypto')
 const xml2js = require('xml2js')
 
-const mapResponse = (response) => {
+const weekDays = (locale) => {
+  const date = new Date(2020, 10, 29)
+
+  return Array.from(Array(7).keys()).map(() => {
+    const day = date.toLocaleString(locale, { weekday: 'long' }).substring(0, 3).toLowerCase()
+
+    date.setDate(date.getDate() + 1)
+
+    return day.substring(0, 1).toUpperCase() + day.substring(1)
+  })
+}
+
+const mapResponse = (response, locale) => {
   if (parseInt(response.stat) !== 0) return [`Mondial Relay error code ${response.stat}`]
   if (!response.pointsrelais.pointrelais_details) return [false, []]
+
+  const _weekDays = weekDays(locale)
 
   return [false, response.pointsrelais.pointrelais_details.map((location) => {
     return {
@@ -17,13 +31,13 @@ const mapResponse = (response) => {
       distance: location.distance,
       hours: {
         days: [
-          generateHours(location.horaires_dimanche),
-          generateHours(location.horaires_lundi),
-          generateHours(location.horaires_mardi),
-          generateHours(location.horaires_mercredi),
-          generateHours(location.horaires_jeudi),
-          generateHours(location.horaires_vendredi),
-          generateHours(location.horaires_samedi)
+          generateHours(location.horaires_dimanche, _weekDays[0]),
+          generateHours(location.horaires_lundi, _weekDays[1]),
+          generateHours(location.horaires_mardi, _weekDays[2]),
+          generateHours(location.horaires_mercredi, _weekDays[3]),
+          generateHours(location.horaires_jeudi, _weekDays[4]),
+          generateHours(location.horaires_vendredi, _weekDays[5]),
+          generateHours(location.horaires_samedi, _weekDays[6])
         ]
       },
       id: location.num,
@@ -34,15 +48,15 @@ const mapResponse = (response) => {
   })]
 }
 
-const generateHours = (hours) => {
+const generateHours = (hours, weekDay) => {
   const schedules = hours.string
   const details = schedules.reduce((acc, schedule) => {
     if (schedule !== '0000') acc.push(`${schedule.slice(0, 2)}h${schedule.slice(2)}`)
     return acc
   }, [])
   if (details.length === 0) return false
-  if (details.length === 2) return `${details[0]} - ${details[1]}`
-  if (details.length === 4) return `${details[0]} - ${details[1]}, ${details[2]} - ${details[3]}`
+  if (details.length === 2) return `${weekDay}: ${details[0]} - ${details[1]}`
+  if (details.length === 4) return `${weekDay}: ${details[0]} - ${details[1]}, ${details[2]} - ${details[3]}`
 }
 
 const toJson = (xml) => {

@@ -97,10 +97,10 @@ module.exports = class MondialRelayService {
 
     if (type === 'geocode') {
       let latitude = Math.abs(content.lat)
-      latitude = latitude < 10 ? `0${latitude.toPrecision(8)}` : latitude.toPrecision(9)
+      latitude = latitude < 10 ? `0${latitude.toFixed(7)}` : latitude.toFixed(7)
 
       let longitude = Math.abs(content.lng)
-      longitude = longitude < 10 ? `0${longitude.toPrecision(8)}` : longitude.toPrecision(9)
+      longitude = longitude < 10 ? `0${longitude.toFixed(7)}` : longitude.toFixed(7)
 
       if (content.lat < 0) latitude = `-${latitude}`
       if (content.lng < 0) longitude = `-${longitude}`

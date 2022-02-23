@@ -110,10 +110,13 @@ export default {
       })
     },
     onLocationsChange (locations) {
+      if (locations.length === 0) return
+
       this.newLocations = locations
       this.$nextTick(() => {
         this.onReady(() => {
           this.$refs.gMap.initChildren()
+          if (this.newLocations.length === 0) return
           this.zoomMarkers(this.newLocations)
         })
       })
